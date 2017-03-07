@@ -110,27 +110,16 @@ class Denis(pygame.sprite.Sprite, ConnectionListener):
         self.rect.center = [SCREEN_WIDTH/2,SCREEN_HEIGHT/2]
         self.orientation = 'w'
         """
-        
+
     """
     Methode gerant le message denis
     Parametres :
         - data : message
     """
     def Network_denis(self,data):
-        self.orientation = data['denis'][2]
-        if self.orientation == 'e'
-            self.image = self.image_e
-        elif self.orientation == 'w'
-            self.image = self.image_w
-        elif self.orientation == 'ne'
-            self.image = self.image_ne
-        elif self.orientation == 'nw'
-            self.image = self.image_nw
-        elif self.orientation == 'se'
-            self.image = self.image_se
-        elif self.orientation == 'sw'
-            self.image = self.image_sw
-        self.rect.center = data['denis'][0:2]
+        self.orientation = data['denis'].orientation
+        self.image = data['denis'].image
+        self.rect.center = data['denis'].rect.center
 
     """
     Methode mettant à jour l'affichage du sprite
