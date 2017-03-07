@@ -20,7 +20,7 @@ Retourne
     - image de type pygame.image
 """
 def load_png(path):
-        fullpath=os.path.join('.',name)
+        fullpath=os.path.join('.',path)
         try:
             image=pygame.image.load(fullpath)
             if image.get_alpha is None:
@@ -28,7 +28,7 @@ def load_png(path):
             else:
                 image = image.convert_alpha()
         except pygame.error:
-            print('Cannot load image: %s' % name)
+            print('Cannot load image: %s' % path)
             raise SystemExit
         return image,image.get_rect()
 
@@ -71,9 +71,11 @@ class GameClient(ConnectionListener):
     Parametres :
         - data : message
     """
-    def Network_connected(self,data):
+    def Network_error(self,data):
+
         print('error :%s', data['error'][1])
         connection.Close()
+
 
 
     """
@@ -97,7 +99,6 @@ class Denis(pygame.sprite.Sprite, ConnectionListener):
     """
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        """
         self.image,self.rect=load_png("pics/denis/denis-w.png")
 
         self.image_e,_=load_png("pics/denis/denis-e.png")
@@ -109,7 +110,6 @@ class Denis(pygame.sprite.Sprite, ConnectionListener):
 
         self.rect.center = [SCREEN_WIDTH/2,SCREEN_HEIGHT/2]
         self.orientation = 'w'
-        """
 
     """
     Methode gerant le message denis
@@ -117,9 +117,9 @@ class Denis(pygame.sprite.Sprite, ConnectionListener):
         - data : message
     """
     def Network_denis(self,data):
-        self.orientation = data['denis'].orientation
-        self.image = data['denis'].image
-        self.rect.center = data['denis'].rect.center
+        self.orientation = data['denis'][2]
+        self.image,_ = load_png("pics/denis/denis-"+(self.orientation)+".png")
+        self.rect.center = data['denis'][0:2]
 
     """
     Methode mettant à jour l'affichage du sprite
@@ -147,21 +147,27 @@ if __name__=='__main__':
     while True:
         clock.tick(60)
         connection.Pump()
+
         gameClient.Pump()
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            sys.exit(0)
-
-    if gameClient.run:
-        keys = pygame.key.get_pressed()
-        if keys[K_q]:
-            sys.exit(0)
-
-        conneciton.Send({'action':'keys','keystrokes':keys})
-
-        denis_sprite.update()
-        denis_sprite.draw(screen)
 
 
-    pygame.display.flip()
+
+        for event in pygame.event.get():
+
+            if event.type == pygame.QUIT:
+                sys.exit(0)
+
+
+        if gameClient.run:
+            keys = pygame.key.get_pressed()
+            if keys[K_q]:
+                sys.exit(0)
+
+            connection.Send({'action':'keys','keystrokes':keys})
+
+            denis_sprite.update()
+            denis_sprite.draw(screen)
+
+
+        pygame.display.flip()
