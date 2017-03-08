@@ -127,6 +127,13 @@ class Denis(pygame.sprite.Sprite, ConnectionListener):
     def update(self):
         self.Pump()
 
+class Mur(pygame.sprite.Sprite, ConnectionListener):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((128,15),0,None)
+        self.rect = pygame.Rect(0,0,128,15)
+        self.image.fill((255,0,0))
+
 """
 Main du client
 """
@@ -139,10 +146,18 @@ if __name__=='__main__':
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
     clock = pygame.time.Clock()
-    pygame.key.set_repeat(1,1)
+    pygame.key.set_repeat(500,50)
+
+
+    background = pygame.Surface((800,600),0, None)
+
+    screen.blit(background,(0,0),None,0)
 
     denis_sprite = pygame.sprite.RenderClear()
     denis_sprite.add(Denis())
+
+    mur_sprite = pygame.sprite.RenderClear()
+    mur_sprite.add(Mur())
 
     while True:
         clock.tick(60)
@@ -150,14 +165,12 @@ if __name__=='__main__':
 
         gameClient.Pump()
 
-
-
+        print(pygame.sprite.groupcollide(denis_sprite,mur_sprite,False,False))
 
         for event in pygame.event.get():
 
             if event.type == pygame.QUIT:
                 sys.exit(0)
-
 
         if gameClient.run:
             keys = pygame.key.get_pressed()
@@ -166,8 +179,12 @@ if __name__=='__main__':
 
             connection.Send({'action':'keys','keystrokes':keys})
 
+
             denis_sprite.update()
+            denis_sprite.clear(screen,background)
+            mur_sprite.draw(screen)
             denis_sprite.draw(screen)
+
 
 
         pygame.display.flip()
