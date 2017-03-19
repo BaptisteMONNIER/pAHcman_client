@@ -173,18 +173,41 @@ if __name__=='__main__':
     denis_sprite.add(Denis())
 
     mur_sprite = pygame.sprite.RenderClear()
+
+    r = 255
+    g = 0
+    b = 0
+
+    #Haut de la map
     mur_sprite.add(Mur(0,0,SCREEN_WIDTH,15,255,0,0))
-    mur_sprite.add(Mur(0,15,15,170,255,0,0))
-    mur_sprite.add(Mur(0,185,200,15,255,0,0))
-    mur_sprite.add(Mur(200,185,15,80,255,0,0))
-    mur_sprite.add(Mur(0,265,215,15,255,0,0))
-    mur_sprite.add(Mur(0,265,215,15,255,0,0))
-    mur_sprite.add(Mur(0,353,215,15,255,0,0))
-    mur_sprite.add(Mur(200,368,15,80,255,0,0))
 
 
+    #Côté gauche de la map
+    mur_sprite.add(Mur(0,15,15,170,r,g,b))
+    mur_sprite.add(Mur(0,185,200,15,r,g,b))
+    mur_sprite.add(Mur(200,185,15,80,r,g,b))
+    mur_sprite.add(Mur(0,265,215,15,r,g,b))
+    mur_sprite.add(Mur(0,265,215,15,r,g,b))
+    mur_sprite.add(Mur(0,353,215,15,r,g,b))
+    mur_sprite.add(Mur(200,368,15,80,r,g,b))
+    mur_sprite.add(Mur(0,433,215,15,r,g,b))
+    mur_sprite.add(Mur(0,433,15,SCREEN_HEIGHT-433,r,g,b))
 
-    mur_sprite.add(Mur(88,88,15,15,255,0,0))
+    #Bas de la map
+    mur_sprite.add(Mur(0,SCREEN_HEIGHT-15,SCREEN_WIDTH,15,r,g,b))
+
+    #Côté droit de la map
+    mur_sprite.add(Mur(SCREEN_WIDTH-15,15,15,170,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH-200,185,200,15,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH-215,185,15,80,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH-215,265,215,15,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH-215,265,215,15,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH-215,353,215,15,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH-215,368,15,80,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH-215,433,215,15,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH-15,433,15,SCREEN_HEIGHT-433,r,g,b))
+
+    mur_sprite.add(Mur(88,88,15,15,r,g,b))
 
     while True:
         clock.tick(60)
