@@ -101,33 +101,12 @@ class Denis(pygame.sprite.Sprite, ConnectionListener):
         pygame.sprite.Sprite.__init__(self)
         self.image,self.rect=load_png("pics/denis/denis-w.png")
 
-        png_e,_=load_png("pics/denis/denis-e.png")
-        png_w,_=load_png("pics/denis/denis-w.png")
-        png_ne,_=load_png("pics/denis/denis-ne.png")
-        png_nw,_=load_png("pics/denis/denis-nw.png")
-        png_se,_=load_png("pics/denis/denis-se.png")
-        png_sw,_=load_png("pics/denis/denis-sw.png")
-
-        hitbox_e = pygame.Surface((png_e.get_width()+11,png_e.get_height()+11),0, None)
-        hitbox_w = pygame.Surface((png_w.get_width()+11,png_w.get_height()+11),0, None)
-        hitbox_ne = pygame.Surface((png_ne.get_width()+11,png_ne.get_height()+11),0, None)
-        hitbox_nw = pygame.Surface((png_nw.get_width()+11,png_nw.get_height()+11),0, None)
-        hitbox_se = pygame.Surface((png_se.get_width()+11,png_se.get_height()+11),0, None)
-        hitbox_sw = pygame.Surface((png_sw.get_width()+11,png_sw.get_height()+11),0, None)
-
-        hitbox_e.blit(png_e,(int(hitbox_e.get_width()/2)-int(png_e.get_width()/2),int(hitbox_e.get_height()/2)-int(png_e.get_height()/2)),None,0)
-        hitbox_w.blit(png_w,(int(hitbox_w.get_width()/2)-int(png_w.get_width()/2),int(hitbox_w.get_height()/2)-int(png_w.get_height()/2)),None,0)
-        hitbox_ne.blit(png_ne,(int(hitbox_ne.get_width()/2)-int(png_ne.get_width()/2),int(hitbox_ne.get_height()/2)-int(png_ne.get_height()/2)),None,0)
-        hitbox_nw.blit(png_nw,(int(hitbox_nw.get_width()/2)-int(png_nw.get_width()/2),int(hitbox_nw.get_height()/2)-int(png_nw.get_height()/2)),None,0)
-        hitbox_se.blit(png_se,(int(hitbox_se.get_width()/2)-int(png_se.get_width()/2),int(hitbox_se.get_height()/2)-int(png_se.get_height()/2)),None,0)
-        hitbox_sw.blit(png_sw,(int(hitbox_sw.get_width()/2)-int(png_sw.get_width()/2),int(hitbox_sw.get_height()/2)-int(png_sw.get_height()/2)),None,0)
-
-        self.image_e = hitbox_e
-        self.image_w = hitbox_w
-        self.image_ne = hitbox_ne
-        self.image_nw = hitbox_nw
-        self.image_se = hitbox_se
-        self.image_sw = hitbox_sw
+        self.image_e,_=load_png("pics/denis/denis-e.png")
+        self.image_w,_=load_png("pics/denis/denis-w.png")
+        self.image_ne,_=load_png("pics/denis/denis-ne.png")
+        self.image_nw,_=load_png("pics/denis/denis-nw.png")
+        self.image_se,_=load_png("pics/denis/denis-se.png")
+        self.image_sw,_=load_png("pics/denis/denis-sw.png")
 
         self.image = self.image_w
         self.rect.center = [SCREEN_WIDTH/2,SCREEN_HEIGHT/2]
@@ -181,7 +160,7 @@ if __name__=='__main__':
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
     clock = pygame.time.Clock()
-    pygame.key.set_repeat(500,50)
+    pygame.key.set_repeat(70,70)
 
 
     background = pygame.Surface((800,600),0, None)
@@ -194,17 +173,15 @@ if __name__=='__main__':
     mur_sprite = pygame.sprite.RenderClear()
     mur_sprite.add(Mur())
 
+    collision = False
+    mur_collidex = 0
+    mur_collidey = 0
+
     while True:
         clock.tick(60)
         connection.Pump()
 
         gameClient.Pump()
-
-        mur_collidex = 0
-        mur_collidey = 0
-        for sprite in pygame.sprite.groupcollide(mur_sprite,denis_sprite,False,False):
-            mur_collidex = sprite.rect.width
-            mur_collidey = sprite.rect.height
 
         for event in pygame.event.get():
 
@@ -216,14 +193,24 @@ if __name__=='__main__':
             if keys[K_q]:
                 sys.exit(0)
 
+            for sprite in pygame.sprite.groupcollide(mur_sprite,denis_sprite,False,False):
+                mur_collidex = sprite.rect.right
+                mur_collidey = sprite.rect.bottom
+                collision = True
+
             connection.Send({'action':'keys','keystrokes':keys,'mur_collidex':mur_collidex,'mur_collidey':mur_collidey})
 
 
-            denis_sprite.update()
-            denis_sprite.clear(screen,background)
-            mur_sprite.draw(screen)
-            denis_sprite.draw(screen)
 
+            denis_sprite.update()
+            if not collision:
+                denis_sprite.clear(screen,background)
+                mur_sprite.draw(screen)
+                denis_sprite.draw(screen)
+
+            collision = False
+            mur_collidex = 0
+            mur_collidey = 0
 
 
         pygame.display.flip()
