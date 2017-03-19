@@ -142,20 +142,20 @@ class Denis(pygame.sprite.Sprite, ConnectionListener):
         self.Pump()
 
 class Mur(pygame.sprite.Sprite, ConnectionListener):
-    def __init__(self):
+    def __init__(self,x,y,w,h,r,g,b):
         pygame.sprite.Sprite.__init__(self)
 
 
-        self.image = pygame.Surface((128,15),0,None)
-        self.rect = pygame.Rect(100,100,128,15)
-        self.image.fill((255,0,0))
+        self.image = pygame.Surface((w,h),0,None)
+        self.rect = pygame.Rect(x,y,w,h)
+        self.image.fill((r,g,b))
 
 """
 Main du client
 """
 if __name__=='__main__':
-    SCREEN_WIDTH = 800
-    SCREEN_HEIGHT = 600
+    SCREEN_WIDTH = 1024
+    SCREEN_HEIGHT = 768
 
     gameClient = GameClient(sys.argv[1],int(sys.argv[2]))
 
@@ -165,7 +165,7 @@ if __name__=='__main__':
     pygame.key.set_repeat(70,70)
 
 
-    background = pygame.Surface((800,600),0, None)
+    background = pygame.Surface((SCREEN_WIDTH,SCREEN_HEIGHT),0, None)
 
     screen.blit(background,(0,0),None,0)
 
@@ -173,7 +173,18 @@ if __name__=='__main__':
     denis_sprite.add(Denis())
 
     mur_sprite = pygame.sprite.RenderClear()
-    mur_sprite.add(Mur())
+    mur_sprite.add(Mur(0,0,SCREEN_WIDTH,15,255,0,0))
+    mur_sprite.add(Mur(0,15,15,170,255,0,0))
+    mur_sprite.add(Mur(0,185,200,15,255,0,0))
+    mur_sprite.add(Mur(200,185,15,80,255,0,0))
+    mur_sprite.add(Mur(0,265,215,15,255,0,0))
+    mur_sprite.add(Mur(0,265,215,15,255,0,0))
+    mur_sprite.add(Mur(0,353,215,15,255,0,0))
+    mur_sprite.add(Mur(200,368,15,80,255,0,0))
+
+
+
+    mur_sprite.add(Mur(88,88,15,15,255,0,0))
 
     while True:
         clock.tick(60)
