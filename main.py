@@ -193,20 +193,14 @@ if __name__=='__main__':
             if keys[K_q]:
                 sys.exit(0)
 
-            for sprite in pygame.sprite.groupcollide(mur_sprite,denis_sprite,False,False):
-                mur_collidex = sprite.rect.right
-                mur_collidey = sprite.rect.bottom
-                collision = True
-
-            connection.Send({'action':'keys','keystrokes':keys,'mur_collidex':mur_collidex,'mur_collidey':mur_collidey})
+            connection.Send({'action':'keys','keystrokes':keys})
 
 
 
             denis_sprite.update()
-            if not collision:
-                denis_sprite.clear(screen,background)
-                mur_sprite.draw(screen)
-                denis_sprite.draw(screen)
+            denis_sprite.clear(screen,background)
+            mur_sprite.draw(screen)
+            denis_sprite.draw(screen)
 
             collision = False
             mur_collidex = 0
