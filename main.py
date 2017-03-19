@@ -144,6 +144,8 @@ class Denis(pygame.sprite.Sprite, ConnectionListener):
 class Mur(pygame.sprite.Sprite, ConnectionListener):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
+
+
         self.image = pygame.Surface((128,15),0,None)
         self.rect = pygame.Rect(100,100,128,15)
         self.image.fill((255,0,0))
@@ -172,10 +174,6 @@ if __name__=='__main__':
 
     mur_sprite = pygame.sprite.RenderClear()
     mur_sprite.add(Mur())
-
-    collision = False
-    mur_collidex = 0
-    mur_collidey = 0
 
     while True:
         clock.tick(60)
