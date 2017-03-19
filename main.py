@@ -180,6 +180,7 @@ if __name__=='__main__':
 
     #Haut de la map
     mur_sprite.add(Mur(0,0,SCREEN_WIDTH,15,255,0,0))
+    mur_sprite.add(Mur(SCREEN_WIDTH/2-5,15,10,100,255,0,0))
 
 
     #Côté gauche de la map
@@ -205,7 +206,40 @@ if __name__=='__main__':
     mur_sprite.add(Mur(SCREEN_WIDTH-215,470,215,15,r,g,b))
     mur_sprite.add(Mur(SCREEN_WIDTH-15,470,15,SCREEN_HEIGHT-433,r,g,b))
 
-    mur_sprite.add(Mur(88,88,15,15,r,g,b))
+
+    #Interieur de la map, partie haute
+    mur_sprite.add(Mur(88,88,100,15,r,g,b))
+    mur_sprite.add(Mur(300,88,130,15,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH-188,88,100,15,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH-430,88,130,15,r,g,b))
+
+    #Cage à AH
+    mur_sprite.add(Mur(SCREEN_WIDTH/2-150,SCREEN_HEIGHT/2-70,300,15,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH/2-150,SCREEN_HEIGHT/2+70,300,15,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH/2-150,SCREEN_HEIGHT/2-55,15,130,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH/2+135,SCREEN_HEIGHT/2-55,15,130,r,g,b))
+
+    #Partie entre cage à AH et haut de la map
+    mur_sprite.add(Mur(288,185,1,100,r,g,b))
+    mur_sprite.add(Mur(288,235,150,1,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH-287,185,1,100,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH-437,235,150,1,r,g,b))
+
+    #barres entre la cage à AH et les côtés de la map
+    mur_sprite.add(Mur(288,400,1,100,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH-287,400,1,100,r,g,b))
+
+    #Partie interieure basse de la map
+    mur_sprite.add(Mur(88,SCREEN_HEIGHT-103,300,15,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH-388,SCREEN_HEIGHT-103,300,15,r,g,b))
+    mur_sprite.add(Mur(288,SCREEN_HEIGHT-153,15,50,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH-303,SCREEN_HEIGHT-153,15,50,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH/2-5,SCREEN_HEIGHT-178,10,90,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH/2-110,SCREEN_HEIGHT-193,220,15,r,g,b))
+    mur_sprite.add(Mur(88,570,127,15,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH-215,570,127,15,r,g,b))
+
+
 
     while True:
         clock.tick(60)
