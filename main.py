@@ -187,10 +187,10 @@ if __name__=='__main__':
     mur_sprite.add(Mur(0,185,200,15,r,g,b))
     mur_sprite.add(Mur(200,185,15,80,r,g,b))
     mur_sprite.add(Mur(0,265,215,15,r,g,b))
-    mur_sprite.add(Mur(0,353,215,15,r,g,b))
-    mur_sprite.add(Mur(200,368,15,80,r,g,b))
-    mur_sprite.add(Mur(0,433,215,15,r,g,b))
-    mur_sprite.add(Mur(0,433,15,SCREEN_HEIGHT-433,r,g,b))
+    mur_sprite.add(Mur(0,390,215,15,r,g,b))
+    mur_sprite.add(Mur(200,405,15,80,r,g,b))
+    mur_sprite.add(Mur(0,470,215,15,r,g,b))
+    mur_sprite.add(Mur(0,470,15,SCREEN_HEIGHT-433,r,g,b))
 
     #Bas de la map
     mur_sprite.add(Mur(0,SCREEN_HEIGHT-15,SCREEN_WIDTH,15,r,g,b))
@@ -200,10 +200,10 @@ if __name__=='__main__':
     mur_sprite.add(Mur(SCREEN_WIDTH-200,185,200,15,r,g,b))
     mur_sprite.add(Mur(SCREEN_WIDTH-215,185,15,80,r,g,b))
     mur_sprite.add(Mur(SCREEN_WIDTH-215,265,215,15,r,g,b))
-    mur_sprite.add(Mur(SCREEN_WIDTH-215,353,215,15,r,g,b))
-    mur_sprite.add(Mur(SCREEN_WIDTH-215,368,15,80,r,g,b))
-    mur_sprite.add(Mur(SCREEN_WIDTH-215,433,215,15,r,g,b))
-    mur_sprite.add(Mur(SCREEN_WIDTH-15,433,15,SCREEN_HEIGHT-433,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH-215,390,215,15,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH-215,405,15,80,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH-215,470,215,15,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH-15,470,15,SCREEN_HEIGHT-433,r,g,b))
 
     mur_sprite.add(Mur(88,88,15,15,r,g,b))
 
