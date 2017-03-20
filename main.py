@@ -146,6 +146,7 @@ class AhBleu(pygame.sprite.Sprite, ConnectionListener):
         pygame.sprite.Sprite.__init__(self)
 
         self.image,_=load_png("pics/ah.png")
+        self.rect = pygame.Rect(20,20,self.image.get_width(),self.image.get_height())
 
     def update(self):
         self.Pump()
