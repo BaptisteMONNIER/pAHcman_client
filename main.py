@@ -64,7 +64,10 @@ class GameClient(ConnectionListener):
     """
     def Network_start(self,data):
         self.run = True
+        self.perso = data['perso']
 
+    def Network_stop(self):
+        exit(0)
 
     """
     Methode gérant le message error
@@ -145,8 +148,7 @@ class AhBleu(pygame.sprite.Sprite, ConnectionListener):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
 
-        self.image,_=load_png("pics/ah.png")
-        self.rect = pygame.Rect(20,20,self.image.get_width(),self.image.get_height())
+        self.image,self.rect=load_png("pics/ah.png")
 
     def update(self):
         self.Pump()
@@ -189,13 +191,13 @@ if __name__=='__main__':
 
     mur_sprite = pygame.sprite.RenderClear()
 
-    r = 255
+    r = 200
     g = 0
     b = 0
 
     #Haut de la map
-    mur_sprite.add(Mur(0,0,SCREEN_WIDTH,15,255,0,0))
-    mur_sprite.add(Mur(SCREEN_WIDTH/2-5,15,10,100,255,0,0))
+    mur_sprite.add(Mur(0,0,SCREEN_WIDTH,15,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH/2-5,15,10,100,r,g,b))
 
 
     #Côté gauche de la map
@@ -229,7 +231,9 @@ if __name__=='__main__':
     mur_sprite.add(Mur(SCREEN_WIDTH-430,88,130,15,r,g,b))
 
     #Cage à AH
-    mur_sprite.add(Mur(SCREEN_WIDTH/2-150,SCREEN_HEIGHT/2-70,300,15,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH/2-150,SCREEN_HEIGHT/2-70,100,15,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH/2+50,SCREEN_HEIGHT/2-70,100,15,r,g,b))
+    mur_sprite.add(Mur(SCREEN_WIDTH/2-50,SCREEN_HEIGHT/2-70,100,10,r,g,b))
     mur_sprite.add(Mur(SCREEN_WIDTH/2-150,SCREEN_HEIGHT/2+70,300,15,r,g,b))
     mur_sprite.add(Mur(SCREEN_WIDTH/2-150,SCREEN_HEIGHT/2-55,15,130,r,g,b))
     mur_sprite.add(Mur(SCREEN_WIDTH/2+135,SCREEN_HEIGHT/2-55,15,130,r,g,b))
@@ -256,7 +260,7 @@ if __name__=='__main__':
 
 
     ahBleu_sprite = pygame.sprite.RenderClear()
-    ahBleu_sprite.add=(AhBleu())
+    ahBleu_sprite.add(AhBleu())
 
     while True:
         clock.tick(60)
@@ -274,20 +278,21 @@ if __name__=='__main__':
             if keys[K_q]:
                 sys.exit(0)
 
-            connection.Send({'action':'keys','keystrokes':keys})
+            connection.Send({'action':'keys','keystrokes':keys,'perso':gameClient.perso})
 
 
 
             denis_sprite.update()
             ahBleu_sprite.update()
+
+
             denis_sprite.clear(screen,background)
+            ahBleu_sprite.clear(screen,background)
+
+
             mur_sprite.draw(screen)
             denis_sprite.draw(screen)
             ahBleu_sprite.draw(screen)
-
-            collision = False
-            mur_collidex = 0
-            mur_collidey = 0
 
 
         pygame.display.flip()
