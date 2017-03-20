@@ -141,6 +141,20 @@ class Denis(pygame.sprite.Sprite, ConnectionListener):
     def update(self):
         self.Pump()
 
+class AhBleu(pygame.sprite.Sprite, ConnectionListener):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+
+        self.image,_=load_png("pics/ah.png")
+
+    def update(self):
+        self.Pump()
+
+    def Network_AhBleu(self,data):
+        self.rect.center = data['AhBleu'][0:2]
+
+
+
 class Mur(pygame.sprite.Sprite, ConnectionListener):
     def __init__(self,x,y,w,h,r,g,b):
         pygame.sprite.Sprite.__init__(self)
@@ -240,6 +254,8 @@ if __name__=='__main__':
     mur_sprite.add(Mur(SCREEN_WIDTH-215,570,127,15,r,g,b))
 
 
+    ahBleu_sprite = pygame.sprite.RenderClear()
+    ahBleu_sprite.add=(AhBleu())
 
     while True:
         clock.tick(60)
