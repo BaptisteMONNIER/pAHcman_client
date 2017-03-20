@@ -278,9 +278,11 @@ if __name__=='__main__':
 
 
             denis_sprite.update()
+            ahBleu_sprite.update()
             denis_sprite.clear(screen,background)
             mur_sprite.draw(screen)
             denis_sprite.draw(screen)
+            ahBleu_sprite.draw(screen)
 
             collision = False
             mur_collidex = 0
