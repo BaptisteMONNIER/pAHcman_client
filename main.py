@@ -12,6 +12,12 @@ from pygame.locals import *
 import random
 from PodSixNet.Connection import connection, ConnectionListener
 
+invincibilite_denis = -1
+pvdenis = 10
+pvah = 10
+gagnant = ''
+fin = False
+
 """
 Charge une image png
 Paramètres :
@@ -66,8 +72,23 @@ class GameClient(ConnectionListener):
         self.run = True
         self.perso = data['perso']
 
-    def Network_stop(self):
+    def Network_stop(self,data):
         exit(0)
+
+    def Network_ddenis(self,data):
+        global pvdenis
+        pvdenis = data['pvdenis']
+
+    def Network_dah(self,data):
+        global pvah
+        pvah = data['pvah']
+
+    def Network_fin(self,data):
+        global gagnant
+        global fin
+        gagnant = data['gagnant']
+        fin = True
+
 
     """
     Methode gérant le message error
@@ -111,6 +132,13 @@ class Denis(pygame.sprite.Sprite, ConnectionListener):
         self.image_se,_=load_png("pics/denis/denis-se.png")
         self.image_sw,_=load_png("pics/denis/denis-sw.png")
 
+        self.image_ie,_=load_png("pics/idenis/denis-e.png")
+        self.image_iw,_=load_png("pics/idenis/denis-w.png")
+        self.image_ine,_=load_png("pics/idenis/denis-ne.png")
+        self.image_inw,_=load_png("pics/idenis/denis-nw.png")
+        self.image_ise,_=load_png("pics/idenis/denis-se.png")
+        self.image_isw,_=load_png("pics/idenis/denis-sw.png")
+
         self.image = self.image_w
         self.rect.center = [SCREEN_WIDTH/2,SCREEN_HEIGHT/2]
         self.orientation = 'w'
@@ -123,19 +151,38 @@ class Denis(pygame.sprite.Sprite, ConnectionListener):
     """
     def Network_denis(self,data):
         self.orientation = data['denis'][2]
-        if self.orientation == 'e':
-            self.image = self.image_e
-        elif self.orientation == 'w':
-            self.image = self.image_w
-        elif self.orientation == 'ne':
-            self.image = self.image_ne
-        elif self.orientation == 'nw':
-            self.image = self.image_nw
-        elif self.orientation == 'se':
-            self.image = self.image_se
-        elif self.orientation == 'sw':
-            self.image = self.image_sw
+        self.invincibilite = data['denis'][3]
 
+        global invincibilite_denis
+
+        invincibilite_denis = self.invincibilite
+
+        if(self.invincibilite != -1):
+            if self.orientation == 'e':
+                self.image = self.image_ie
+            elif self.orientation == 'w':
+                self.image = self.image_iw
+            elif self.orientation == 'ne':
+                self.image = self.image_ine
+            elif self.orientation == 'nw':
+                self.image = self.image_inw
+            elif self.orientation == 'se':
+                self.image = self.image_ise
+            elif self.orientation == 'sw':
+                self.image = self.image_isw
+        else:
+            if self.orientation == 'e':
+                self.image = self.image_e
+            elif self.orientation == 'w':
+                self.image = self.image_w
+            elif self.orientation == 'ne':
+                self.image = self.image_ne
+            elif self.orientation == 'nw':
+                self.image = self.image_nw
+            elif self.orientation == 'se':
+                self.image = self.image_se
+            elif self.orientation == 'sw':
+                self.image = self.image_sw
         self.rect.center = data['denis'][0:2]
 
     """
@@ -143,6 +190,24 @@ class Denis(pygame.sprite.Sprite, ConnectionListener):
     """
     def update(self):
         self.Pump()
+
+class Cabane(pygame.sprite.Sprite, ConnectionListener):
+
+    def __init__(self,x,y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image,self.rect=load_png("pics/cabane.png")
+        self.rect = pygame.Rect(x,y,self.rect.w,self.rect.w)
+
+    def update(self):
+        self.Pump()
+
+    def Network_Cabane(self,data):
+
+        if(self.rect.centerx == data['Cabane'][0] and self.rect.centery == data['Cabane'][1]):
+
+            self.rect.center = data['Cabane'][2:4]
+
+
 
 class AhBleu(pygame.sprite.Sprite, ConnectionListener):
     def __init__(self):
@@ -177,12 +242,15 @@ if __name__=='__main__':
     gameClient = GameClient(sys.argv[1],int(sys.argv[2]))
 
     pygame.init()
-    screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
+    screen = pygame.display.set_mode((SCREEN_WIDTH+300,SCREEN_HEIGHT))
     clock = pygame.time.Clock()
     pygame.key.set_repeat(70,70)
 
 
-    background = pygame.Surface((SCREEN_WIDTH,SCREEN_HEIGHT),0, None)
+    background = pygame.Surface((SCREEN_WIDTH+300,SCREEN_HEIGHT),0, None)
+    interface = pygame.Surface((300,SCREEN_HEIGHT),0,None)
+
+    screen.blit(background,(SCREEN_WIDTH,0),None,0)
 
     screen.blit(background,(0,0),None,0)
 
@@ -262,6 +330,19 @@ if __name__=='__main__':
     ahBleu_sprite = pygame.sprite.RenderClear()
     ahBleu_sprite.add(AhBleu())
 
+    cabane_sprite = pygame.sprite.RenderClear()
+    cabane_sprite.add(Cabane(15,15))
+    cabane_sprite.add(Cabane(SCREEN_WIDTH/2-70,15))
+    cabane_sprite.add(Cabane(SCREEN_WIDTH/2+70,15))
+    cabane_sprite.add(Cabane(SCREEN_WIDTH-85,15))
+
+    cabane_sprite.add(Cabane(15,SCREEN_HEIGHT-85))
+    cabane_sprite.add(Cabane(SCREEN_WIDTH/2-70,SCREEN_HEIGHT-85))
+    cabane_sprite.add(Cabane(SCREEN_WIDTH/2+70,SCREEN_HEIGHT-85))
+    cabane_sprite.add(Cabane(SCREEN_WIDTH-85,SCREEN_HEIGHT-85))
+
+    i = 0
+
     while True:
         clock.tick(60)
         connection.Pump()
@@ -280,19 +361,39 @@ if __name__=='__main__':
 
             connection.Send({'action':'keys','keystrokes':keys,'perso':gameClient.perso})
 
-
-
             denis_sprite.update()
             ahBleu_sprite.update()
-
+            cabane_sprite.update()
 
             denis_sprite.clear(screen,background)
             ahBleu_sprite.clear(screen,background)
+            cabane_sprite.clear(screen,background)
 
 
             mur_sprite.draw(screen)
             denis_sprite.draw(screen)
             ahBleu_sprite.draw(screen)
+            cabane_sprite.draw(screen)
+
+            screen.blit(interface,(SCREEN_WIDTH,0),None,0)
+            global invincibilite_denis
+            global pvdenis
+            global pvah
+            screen.blit(pygame.font.SysFont("Cambria",30).render("Vous controlez " + gameClient.perso,1,(255,255,255)),(SCREEN_WIDTH,0))
+            screen.blit(pygame.font.SysFont("Cambria",30).render("Points de vie denis = " + str(pvdenis),1,(255,255,255)),(SCREEN_WIDTH,40))
+            screen.blit(pygame.font.SysFont("Cambria",30).render("Points de vie ah = " + str(pvah),1,(255,255,255)),(SCREEN_WIDTH,80))
+            screen.blit(pygame.font.SysFont("Cambria",30).render("Quitter = Q",1,(255,255,255)),(SCREEN_WIDTH,SCREEN_HEIGHT-40))
+            if(invincibilite_denis != -1):
+                screen.blit(pygame.font.SysFont("Cambria",30).render("Invincibilite denis = " + str(invincibilite_denis),1,(255,255,255)),(SCREEN_WIDTH,100))
+
+            global gagnant
+            global fin
+
+            if fin:
+                if(gameClient.perso in gagnant):
+                    screen.blit(pygame.font.SysFont("Cambria",30).render("Vous avez gagne",1,(255,255,255)),(SCREEN_WIDTH,SCREEN_HEIGHT/2))
+                else:
+                    screen.blit(pygame.font.SysFont("Cambria",30).render("Vous avez perdu",1,(255,255,255)),(SCREEN_WIDTH,SCREEN_HEIGHT/2))
 
 
         pygame.display.flip()
