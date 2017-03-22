@@ -125,6 +125,7 @@ class Denis(pygame.sprite.Sprite, ConnectionListener):
         pygame.sprite.Sprite.__init__(self)
         self.image,self.rect=load_png("pics/denis/denis-w.png")
 
+        #images denis à l'état normal
         self.image_e,_=load_png("pics/denis/denis-e.png")
         self.image_w,_=load_png("pics/denis/denis-w.png")
         self.image_ne,_=load_png("pics/denis/denis-ne.png")
@@ -132,6 +133,7 @@ class Denis(pygame.sprite.Sprite, ConnectionListener):
         self.image_se,_=load_png("pics/denis/denis-se.png")
         self.image_sw,_=load_png("pics/denis/denis-sw.png")
 
+        #images denis à l'état invincible (lorsqu'il vient de manger une cabane)
         self.image_ie,_=load_png("pics/idenis/denis-e.png")
         self.image_iw,_=load_png("pics/idenis/denis-w.png")
         self.image_ine,_=load_png("pics/idenis/denis-ne.png")
@@ -263,12 +265,12 @@ if __name__=='__main__':
     g = 0
     b = 0
 
-    #Haut de la map
+    #[Mur]Haut de la map
     mur_sprite.add(Mur(0,0,SCREEN_WIDTH,15,r,g,b))
     mur_sprite.add(Mur(SCREEN_WIDTH/2-5,15,10,100,r,g,b))
 
 
-    #Côté gauche de la map
+    #[Mur]Côté gauche de la map
     mur_sprite.add(Mur(0,15,15,170,r,g,b))
     mur_sprite.add(Mur(0,185,200,15,r,g,b))
     mur_sprite.add(Mur(200,185,15,80,r,g,b))
@@ -278,10 +280,10 @@ if __name__=='__main__':
     mur_sprite.add(Mur(0,470,215,15,r,g,b))
     mur_sprite.add(Mur(0,470,15,SCREEN_HEIGHT-433,r,g,b))
 
-    #Bas de la map
+    #[Mur]Bas de la map
     mur_sprite.add(Mur(0,SCREEN_HEIGHT-15,SCREEN_WIDTH,15,r,g,b))
 
-    #Côté droit de la map
+    #[Mur]Côté droit de la map
     mur_sprite.add(Mur(SCREEN_WIDTH-15,15,15,170,r,g,b))
     mur_sprite.add(Mur(SCREEN_WIDTH-200,185,200,15,r,g,b))
     mur_sprite.add(Mur(SCREEN_WIDTH-215,185,15,80,r,g,b))
@@ -292,13 +294,13 @@ if __name__=='__main__':
     mur_sprite.add(Mur(SCREEN_WIDTH-15,470,15,SCREEN_HEIGHT-433,r,g,b))
 
 
-    #Interieur de la map, partie haute
+    #[Mur]Interieur de la map, partie haute
     mur_sprite.add(Mur(88,88,100,15,r,g,b))
     mur_sprite.add(Mur(300,88,130,15,r,g,b))
     mur_sprite.add(Mur(SCREEN_WIDTH-188,88,100,15,r,g,b))
     mur_sprite.add(Mur(SCREEN_WIDTH-430,88,130,15,r,g,b))
 
-    #Cage à AH
+    #[Mur]Cage à AH
     mur_sprite.add(Mur(SCREEN_WIDTH/2-150,SCREEN_HEIGHT/2-70,100,15,r,g,b))
     mur_sprite.add(Mur(SCREEN_WIDTH/2+50,SCREEN_HEIGHT/2-70,100,15,r,g,b))
     mur_sprite.add(Mur(SCREEN_WIDTH/2-50,SCREEN_HEIGHT/2-70,100,10,r,g,b))
@@ -306,17 +308,17 @@ if __name__=='__main__':
     mur_sprite.add(Mur(SCREEN_WIDTH/2-150,SCREEN_HEIGHT/2-55,15,130,r,g,b))
     mur_sprite.add(Mur(SCREEN_WIDTH/2+135,SCREEN_HEIGHT/2-55,15,130,r,g,b))
 
-    #Partie entre cage à AH et haut de la map
+    #[Mur]Partie entre cage à AH et haut de la map
     mur_sprite.add(Mur(288,185,1,100,r,g,b))
     mur_sprite.add(Mur(288,235,150,1,r,g,b))
     mur_sprite.add(Mur(SCREEN_WIDTH-287,185,1,100,r,g,b))
     mur_sprite.add(Mur(SCREEN_WIDTH-437,235,150,1,r,g,b))
 
-    #barres entre la cage à AH et les côtés de la map
+    #[Mur]barres entre la cage à AH et les côtés de la map
     mur_sprite.add(Mur(288,400,1,100,r,g,b))
     mur_sprite.add(Mur(SCREEN_WIDTH-287,400,1,100,r,g,b))
 
-    #Partie interieure basse de la map
+    #[Mur]Partie interieure basse de la map
     mur_sprite.add(Mur(88,SCREEN_HEIGHT-103,300,15,r,g,b))
     mur_sprite.add(Mur(SCREEN_WIDTH-388,SCREEN_HEIGHT-103,300,15,r,g,b))
     mur_sprite.add(Mur(288,SCREEN_HEIGHT-153,15,50,r,g,b))
@@ -326,16 +328,18 @@ if __name__=='__main__':
     mur_sprite.add(Mur(88,570,127,15,r,g,b))
     mur_sprite.add(Mur(SCREEN_WIDTH-215,570,127,15,r,g,b))
 
-
+    #[Ah]
     ahBleu_sprite = pygame.sprite.RenderClear()
     ahBleu_sprite.add(AhBleu())
 
+    #[Cabane]haut de la map
     cabane_sprite = pygame.sprite.RenderClear()
     cabane_sprite.add(Cabane(15,15))
     cabane_sprite.add(Cabane(SCREEN_WIDTH/2-70,15))
     cabane_sprite.add(Cabane(SCREEN_WIDTH/2+70,15))
     cabane_sprite.add(Cabane(SCREEN_WIDTH-85,15))
 
+    #[Cabane]bas de la map
     cabane_sprite.add(Cabane(15,SCREEN_HEIGHT-85))
     cabane_sprite.add(Cabane(SCREEN_WIDTH/2-70,SCREEN_HEIGHT-85))
     cabane_sprite.add(Cabane(SCREEN_WIDTH/2+70,SCREEN_HEIGHT-85))
@@ -390,7 +394,7 @@ if __name__=='__main__':
             global fin
 
             if fin:
-                if(gameClient.perso in gagnant):
+                if(gameClient.perso in gagnant): #Si ce client à gagné
                     screen.blit(pygame.font.SysFont("Cambria",30).render("Vous avez gagne",1,(255,255,255)),(SCREEN_WIDTH,SCREEN_HEIGHT/2))
                 else:
                     screen.blit(pygame.font.SysFont("Cambria",30).render("Vous avez perdu",1,(255,255,255)),(SCREEN_WIDTH,SCREEN_HEIGHT/2))
